@@ -33,6 +33,7 @@ public class App {
     /**
      * CHANGE WITH CORRECT VALUE
      * NOTE THAT WE NEED THE TEMPLATE KEY AND NOT THE TEMPLATE ID
+     * 
      */
     private static final String PORTAL_URL = "http://localhost:8080";
     private static final String URL_ADD_ARTICLE = "/api/jsonws/journalarticle/add-article";

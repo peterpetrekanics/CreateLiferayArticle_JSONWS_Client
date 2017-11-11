@@ -31,8 +31,19 @@ import org.apache.http.util.EntityUtils;
 public class App6120 {
 
     /**
-     * CHANGE WITH CORRECT VALUE
-     * NOTE THAT WE NEED THE TEMPLATE KEY AND NOT THE TEMPLATE ID
+     * CHANGE WITH CORRECT VALUE:
+     * The Group_id has to be obtained from the database, it is the one that has the friendlyUrl: /guest
+     * 
+     * These properties were used:
+     * auth.token.check.enabled=false
+     * json.service.auth.token.enabled=fals
+     * json.servlet.hosts.allowed=127.0.0.1, SERVER_IP
+     * axis.servlet.hosts.allowed=127.0.0.1, SERVER_IP
+     * jsonws.web.service.public.methods=*
+     * jsonws.servlet.hosts.allowed=127.0.0.1,SERVER_IP
+     * json.service.auth.token.hosts.allowed=127.0.0.1,192.168.0.101
+     * change this last one to you own ip address
+     * 
      */
     private static final String PORTAL_URL = "http://localhost:8080";
     private static final String URL_ADD_ARTICLE = "/api/secure/jsonws/journalarticle/add-article";
@@ -40,8 +51,8 @@ public class App6120 {
     private static final String PASSWORD = "test";
     
     private static final long GROUP_ID = 10180;					// 6120
-    private static final String DDM_STRUCTURE_KEY = null;	// 6120
-    private static final String DDM_TEMPLATE_KEY = null;		// 6120
+    private static final String structureId = null;	// 6120
+    private static final String templateId = null;		// 6120
 
     public void addArticle() throws Exception {
         HttpPost httpPost = new HttpPost(URL_ADD_ARTICLE);
@@ -53,7 +64,6 @@ public class App6120 {
     private void setEntities(HttpPost httpPost) throws Exception {
         String[] names = new String[] {
                 "groupId",
-//                "folderId",
                 "classNameId",
                 "classPK",
                 "articleId",
@@ -83,10 +93,6 @@ public class App6120 {
                 "reviewDateMinute",
                 "neverReview",
                 "indexable",
-//                "smallImage",
-//                "smallImageURL",
-//                "smallFile",
-//                "images",
                 "articleURL",
                 "serviceContext"
         };
@@ -111,14 +117,10 @@ public class App6120 {
         String images = "{\"w8lkXLvN_image_\":" + Arrays.toString(bytes) + "}";
 
         String serviceContext = 
-//        		"{\"addGroupPermissions\":false" +
-//                ",\"addGuestPermissions\":false" +
-//                "," +
                 " \"scopeGroupId\":\"" + GROUP_ID + "\"}";
 
         Object[] values = new Object[] {
                 GROUP_ID,           // groupId
-//                0,                  // folderId
                 1,                  // classNameId HAS TO BE GREATER THAN 0
                 0,                  // classPK
                 0,                  // articleId
@@ -127,8 +129,8 @@ public class App6120 {
                 descriptionMap,     // descriptionMap
                 content,            // content
                 "general",          // type
-                DDM_STRUCTURE_KEY,  // ddmStructureKey
-                DDM_TEMPLATE_KEY,   // ddmTemplateKey
+                structureId,  // ddmStructureKey
+                templateId,   // ddmTemplateKey
                 "",                 // layoutId
                 displayDateMonth,   // displayDateMonth
                 displayDateDay,     // displayDateDay
@@ -148,10 +150,6 @@ public class App6120 {
                 0,                  // reviewDateMinute
                 true,               // neverReview
                 true,               // indexable
-//                false,              // smallImage
-//                "",                 // smallImageURL
-//                null,               // smallFile
-//                images,             // images
                 "",                 // articleURL
                 serviceContext      // serviceContext
         };

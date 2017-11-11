@@ -28,35 +28,22 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.util.EntityUtils;
 
-public class App {
+public class App6120 {
 
     /**
      * CHANGE WITH CORRECT VALUE
      * NOTE THAT WE NEED THE TEMPLATE KEY AND NOT THE TEMPLATE ID
      */
     private static final String PORTAL_URL = "http://localhost:8080";
-    private static final String URL_ADD_ARTICLE = "/api/jsonws/journalarticle/add-article";
+    private static final String URL_ADD_ARTICLE = "/api/secure/jsonws/journalarticle/add-article";
     private static final String LOGIN = "test@liferay.com";
     private static final String PASSWORD = "test";
     
-    private static final long GROUP_ID = 20182;					// 6210
-    private static final String DDM_STRUCTURE_KEY = "20460";	// 6210
-    private static final String DDM_TEMPLATE_KEY = "20462";		// 6210
-    
-    //private static final long GROUP_ID = 20182;					// 62X
-    //private static final String DDM_STRUCTURE_KEY = "21139";	// 62X
-    //private static final String DDM_TEMPLATE_KEY = "21141";		// 62X
+    private static final long GROUP_ID = 10180;					// 6120
+    private static final String DDM_STRUCTURE_KEY = null;	// 6120
+    private static final String DDM_TEMPLATE_KEY = null;		// 6120
 
-    public static void main(String[] args) throws Exception {
-//        App app = new App();
-//        app.addArticle();
-        App6120 app6120 = new App6120();
-        app6120.addArticle();
-
-    }
-
-    //this works on liferay 6210 ee
-    private void addArticle() throws Exception {
+    public void addArticle() throws Exception {
         HttpPost httpPost = new HttpPost(URL_ADD_ARTICLE);
         setEntities(httpPost);
         String response = executeRequest(httpPost);
@@ -66,7 +53,7 @@ public class App {
     private void setEntities(HttpPost httpPost) throws Exception {
         String[] names = new String[] {
                 "groupId",
-                "folderId",
+//                "folderId",
                 "classNameId",
                 "classPK",
                 "articleId",
@@ -75,8 +62,8 @@ public class App {
                 "descriptionMap",
                 "content",
                 "type",
-                "ddmStructureKey",
-                "ddmTemplateKey",
+                "structureId",
+                "templateId",
                 "layoutUuid",
                 "displayDateMonth",
                 "displayDateDay",
@@ -96,10 +83,10 @@ public class App {
                 "reviewDateMinute",
                 "neverReview",
                 "indexable",
-                "smallImage",
-                "smallImageURL",
-                "smallFile",
-                "images",
+//                "smallImage",
+//                "smallImageURL",
+//                "smallFile",
+//                "images",
                 "articleURL",
                 "serviceContext"
         };
@@ -123,14 +110,16 @@ public class App {
         byte[] bytes = convert(this.getClass().getClassLoader().getResourceAsStream("screenshot.png"));
         String images = "{\"w8lkXLvN_image_\":" + Arrays.toString(bytes) + "}";
 
-        String serviceContext = "{\"addGroupPermissions\":false" +
-                ",\"addGuestPermissions\":false" +
-                ", \"scopeGroupId\":\"" + GROUP_ID + "\"}";
+        String serviceContext = 
+//        		"{\"addGroupPermissions\":false" +
+//                ",\"addGuestPermissions\":false" +
+//                "," +
+                " \"scopeGroupId\":\"" + GROUP_ID + "\"}";
 
         Object[] values = new Object[] {
                 GROUP_ID,           // groupId
-                0,                  // folderId
-                0,                  // classNameId
+//                0,                  // folderId
+                1,                  // classNameId HAS TO BE GREATER THAN 0
                 0,                  // classPK
                 0,                  // articleId
                 true,               // autoArticleId
@@ -159,10 +148,10 @@ public class App {
                 0,                  // reviewDateMinute
                 true,               // neverReview
                 true,               // indexable
-                false,              // smallImage
-                "",                 // smallImageURL
-                null,               // smallFile
-                images,             // images
+//                false,              // smallImage
+//                "",                 // smallImageURL
+//                null,               // smallFile
+//                images,             // images
                 "",                 // articleURL
                 serviceContext      // serviceContext
         };
